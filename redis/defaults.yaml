@@ -48,6 +48,7 @@ redis:
   unixsocketperm: 755
   user: redis
   overcommit_memory: true
+  update_conf: true
   sentinel:
     port: 26379
     dir: /var/lib/redis
@@ -55,3 +56,4 @@ redis:
     group: redis
     pidfile: /var/run/redis/sentinel.pid
     daemonize: 'yes'
+    update_conf: true

@@ -15,6 +15,9 @@ redis_sentinel_config:
 {% endif %}
         - user: {{ redis_settings.sentinel.user }}
         - group: {{ redis_settings.sentinel.group }}
+{% if not redis_settings.sentinel.update_conf %}
+        - replace: False
+{% endif %}
         - watch_in:
             - service: redis_sentinel_service
 

@@ -84,6 +84,9 @@ redis_config:
 {% else %}
     - source: {{ redis_settings.source_path }}
 {% endif %}
+{% if not redis_settings.update_conf %}
+    - replace: False
+{% endif %}
 
 {% if install_from == 'source' %}
 redis-initd:
