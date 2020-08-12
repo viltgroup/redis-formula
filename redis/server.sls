@@ -107,6 +107,30 @@ redis-initd:
 redis_disable_transparent_huge_pages:
     cmd.run:
         - name: echo "never" > /sys/kernel/mm/transparent_hugepage/enabled
+        - unless: grep -q '\[never\]' /sys/kernel/mm/transparent_hugepage/enabled
+redis_disable_transparent_huge_pages_defrag:
+    cmd.run:
+        - name: echo "never" > /sys/kernel/mm/transparent_hugepage/defrag
+        - unless: grep -q '\[never\]' /sys/kernel/mm/transparent_hugepage/defrag
+
+{% if salt['grains.get']('init', '') == 'systemd' %}
+
+redis_disable_transparent_huge_pages_service:
+  module.wait:
+    - name: service.systemctl_reload
+  file.managed:
+    - source: salt://redis/files/disable-thp.service
+    - user: root
+    - group: root
+    - mode: 644
+    - watch_in:
+      - module: redis_disable_transparent_huge_pages_service
+      - service: redis_disable_transparent_huge_pages_service
+  service.running:
+    - name: disable-thp
+    - enable: True
+
+{% endif %}
 
 {% endif %}
 redis_service:
