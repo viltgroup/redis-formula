@@ -119,10 +119,11 @@ redis_disable_transparent_huge_pages_service:
   module.wait:
     - name: service.systemctl_reload
   file.managed:
+    - name: /etc/systemd/system/disable-thp.service
     - source: salt://redis/files/disable-thp.service
+    - mode: '0644'
     - user: root
     - group: root
-    - mode: 644
     - watch_in:
       - module: redis_disable_transparent_huge_pages_service
       - service: redis_disable_transparent_huge_pages_service
