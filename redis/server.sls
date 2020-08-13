@@ -127,9 +127,8 @@ redis_disable_transparent_huge_pages_service:
     - watch_in:
       - module: redis_disable_transparent_huge_pages_service
       - service: redis_disable_transparent_huge_pages_service
-  service.running:
+  service.enabled:
     - name: disable-thp
-    - enable: True
 
 {% endif %}
 
